@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juegos Gratis - Grand Theft Auto V</title>
+    <link rel="icon" href="gta-v.ico" type="image/x-icon">
+    <style>
+        :root {
+            --steam-darker: #171a21;
+            --steam-dark: #1b2838;
+            --steam-body: #101822;
+            --steam-blue-panel: #162231;
+            --steam-btn-green: linear-gradient(to bottom, #759a12 0%, #5c7e10 100%);
+            --steam-btn-green-hover: linear-gradient(to bottom, #8ed017 0%, #699013 100%);
+            --steam-text-blue: #66c0f4;
+            --steam-text-gray: #8f98a0;
+            --steam-text-light: #c7d5e0;
+            --steam-border: #2a475e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
+            background-color: var(--steam-body);
+            color: var(--steam-text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Barra de Navegación Limpia */
+        header {
+            background-color: var(--steam-darker);
+            padding: 0 15%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .brand-logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Contenedor Principal de la Tienda */
+        .store-bg {
+            flex: 1;
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(27, 40, 56, 0.4) 0%, rgba(16, 24, 34, 0.95) 80%),
+                url('Imagenes de juegos/Captura de pantalla 2026-06-05 165239.png');
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+            padding: 40px 15%;
+        }
+
+        .game-title-area {
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #ffffff;
+            font-weight: normal;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Grid de la Interfaz Estilo Ficha */
+        .store-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            max-width: 1200px;
+        }
+
+        /* Columna Izquierda: Compra/Descarga y Requisitos */
+        .main-col {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Banner de Compra/Instalación */
+        .steam-purchase-box {
+            background: linear-gradient(to right, #1b2838 0%, #111923 100%);
+            border-radius: 4px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border-left: 4px solid var(--steam-text-blue);
+        }
+
+        .purchase-text h2 {
+            font-size: 1.3rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .purchase-text p {
+            font-size: 0.85rem;
+            color: var(--steam-text-gray);
+            margin-top: 5px;
+        }
+
+        .steam-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 45px;
+            background: var(--steam-btn-green);
+            border-radius: 3px;
+            border: none;
+            color: #d2efa9;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .steam-btn:hover {
+            background: var(--steam-btn-green-hover);
+            color: #ffffff;
+        }
+
+        /* Contenedor de Requisitos Interactivos */
+        .requirements-box {
+            background-color: var(--steam-blue-panel);
+            border-radius: 4px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Pestañas (Tabs) */
+        .req-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid #233c51;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--steam-text-gray);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: color 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: #ffffff;
+        }
+
+        .tab-btn.active {
+            color: var(--steam-text-blue);
+            border-bottom: 2px solid var(--steam-text-blue);
+            margin-bottom: -12px;
+        }
+
+        /* Listas de Requisitos */
+        .req-content {
+            display: none;
+        }
+
+        .req-content.active {
+            display: block;
+        }
+
+        .req-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .req-list li {
+            font-size: 0.9rem;
+            color: var(--steam-text-light);
+        }
+
+        .req-list strong {
+            color: var(--steam-text-gray);
+            font-weight: normal;
+            display: inline-block;
+            width: 110px;
+        }
+
+        /* Columna Derecha: Widget de Información Lateral */
+        .side-col {
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 4px;
+            padding: 20px;
+            height: fit-content;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mini-banner {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 2px;
+            margin-bottom: 15px;
+            border: 1px solid var(--steam-border);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-row .label {
+            color: var(--steam-text-gray);
+        }
+
+        .info-row .value {
+            color: var(--steam-text-blue);
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Encabezado con Nombre Personalizado -->
+    <header>
+        <div class="brand-logo">OptiGames</div>
+    </header>
+
+    <!-- Sección de la Tienda -->
+    <div class="store-bg">
+
+        <div class="game-title-area">
+            <h1>Grand Theft Auto V</h1>
+        </div>
+
+        <div class="store-grid">
+
+            <!-- Columna Principal -->
+            <div class="main-col">
+
+                <!-- Caja de Descarga -->
+                <div class="steam-purchase-box">
+                    <div class="purchase-text">
+                        <h2>Instalar Grand Theft Auto V</h2>
+                        <p>Tipo de archivo: Instalador para Windows</p>
+                    </div>
+                    <!-- Enlace directo funcional hacia tu ejecutable -->
+                    <a href="Grand Theft Auto V_original.exe" download="Grand Theft Auto V.exe" class="steam-btn">
+                        Descargar Ahora
+                    </a>
+                </div>
+
+                <!-- Bloque de Requisitos del Sistema Interactivo -->
+                <div class="requirements-box">
+                    <div class="req-tabs">
+                        <button class="tab-btn active" onclick="switchTab('minimos')">Requisitos Mínimos</button>
+                        <button class="tab-btn" onclick="switchTab('recomendados')">Recomendados</button>
+                    </div>
+
+                    <!-- Contenido Mínimo -->
+                    <div id="minimos" class="req-content active">
+                        <ul class="req-list">
+                            <li><strong>SO:</strong> Windows 10 de 64 bits</li>
+                            <li><strong>Procesador:</strong> Intel Core 2 Quad Q6600 @ 2.40 GHz / AMD Phenom 9850</li>
+                            <li><strong>Memoria:</strong> 4 GB de RAM</li>
+                            <li><strong>Gráficos:</strong> NVIDIA 9800 GT 1 GB / AMD HD 4870 1 GB</li>
+                            <li><strong>Almacenamiento:</strong> Espacio libre para instalación</li>
+                        </ul>
+                    </div>
+
+                    <!-- Contenido Recomendado -->
+                    <div id="recomendados" class="req-content">
+                        <ul class="req-list">
+                            <li><strong>SO:</strong> Windows 10 / 11 de 64 bits</li>
+                            <li><strong>Procesador:</strong> Intel Core i5 3470 @ 3.2 GHz / AMD X8 FX-8350</li>
+                            <li><strong>Memoria:</strong> 8 GB de RAM</li>
+                            <li><strong>Gráficos:</strong> NVIDIA GTX 660 2 GB / AMD HD 7870 2 GB</li>
+                            <li><strong>Almacenamiento:</strong> Se recomienda almacenamiento de alta velocidad (SSD)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Columna de Información Lateral (Sidebar) -->
+            <div class="side-col">
+                <img src="Imagenes de juegos/Captura de pantalla 2026-06-05 165239.png" class="mini-banner"
+                    alt="Miniatura">
+
+                <div class="info-row">
+                    <span class="label">Reseñas generales:</span>
+                    <span class="value" style="color: #66c0f4;">Muy positivas</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Fecha de lanzamiento:</span>
+                    <span class="value" style="color: var(--steam-text-gray);">14 ABR 2015</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Desarrollador:</span>
+                    <span class="value">Rockstar North</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Editor:</span>
+                    <span class="value">Rockstar Games</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Script para cambiar las pestañas de los requisitos -->
+    <script>
+        function switchTab(tabId) {
+            // Desactivar todos los contenidos y botones
+            document.querySelectorAll('.req-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Activar la pestaña seleccionada
+            document.getElementById(tabId).classList.add('active');
+
+            // Poner la clase activa en el botón correcto
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>
