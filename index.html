@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games | Grand Theft Auto V</title>
+    <link rel="icon" href="gta-v.ico" type="image/x-icon">
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #141417;
+            --panel-2: #1b1b1f;
+            --red: #e11d2e;
+            --red-hover: #ff2d3f;
+            --line: rgba(255, 255, 255, 0.08);
+            --line-red: rgba(225, 29, 46, 0.5);
+            --text: #f2f2f4;
+            --muted: #9a9aa4;
+            --dim: #5c5c66;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", "Motiva Sans", Arial, Helvetica, sans-serif;
+            background: radial-gradient(1000px 600px at 85% -10%, rgba(225, 29, 46, 0.08), transparent 60%),
+                var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ---------- Barra de Navegación ---------- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(20px, 8vw, 120px);
+            height: 74px;
+            background: rgba(10, 10, 12, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--red);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--text);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            height: 2px;
+            background: var(--red);
+        }
+
+        /* ---------- Contenido principal ---------- */
+        main {
+            padding: clamp(32px, 5vw, 64px) clamp(16px, 8vw, 120px) 80px;
+        }
+
+        .game-title-area {
+            margin-bottom: 34px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--red);
+            border: 1px solid var(--line-red);
+            border-radius: 100px;
+            padding: 6px 14px;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        h1 .red {
+            color: var(--red);
+        }
+
+        .tagline {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        /* ---------- Grid ---------- */
+        .store-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 26px;
+            max-width: 1320px;
+            align-items: start;
+        }
+
+        .main-col {
+            display: flex;
+            flex-direction: column;
+            gap: 26px;
+        }
+
+        /* Tarjeta de descarga */
+        .steam-purchase-box {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: clamp(24px, 4vw, 36px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .steam-purchase-box:hover {
+            border-color: var(--line-red);
+        }
+
+        .purchase-text h2 {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .purchase-text p {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .steam-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 17px 42px;
+            background: var(--red);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.05rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .steam-btn:hover {
+            background: var(--red-hover);
+            transform: translateY(-2px);
+        }
+
+        .steam-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Requisitos */
+        .requirements-box {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 26px;
+            transition: border-color 0.2s;
+        }
+
+        .requirements-box:hover {
+            border-color: var(--line-red);
+        }
+
+        .req-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: 1px solid transparent;
+            color: var(--muted);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 10px 18px;
+            border-radius: 10px;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            background: var(--red);
+        }
+
+        .req-content {
+            display: none;
+        }
+
+        .req-content.active {
+            display: block;
+        }
+
+        .req-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .req-list li {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text);
+            padding: 12px 16px;
+            background: var(--panel-2);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+        }
+
+        .req-list li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            background: var(--red);
+            align-self: center;
+        }
+
+        .req-list strong {
+            color: var(--red);
+            font-weight: 800;
+            flex-shrink: 0;
+            min-width: 118px;
+        }
+
+        /* Columna lateral */
+        .side-col {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+            position: sticky;
+            top: 100px;
+            transition: border-color 0.2s;
+        }
+
+        .side-col:hover {
+            border-color: var(--line-red);
+        }
+
+        .mini-banner {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            border: 1px solid var(--line);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.87rem;
+            padding: 11px 6px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .label {
+            color: var(--dim);
+            font-weight: 600;
+        }
+
+        .info-row .value {
+            color: var(--text);
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .info-row .value.pos {
+            color: var(--red);
+        }
+
+        /* ---------- Footer ---------- */
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 30px clamp(16px, 8vw, 120px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            color: var(--dim);
+            font-size: 0.88rem;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        footer .tag {
+            color: var(--red);
+            font-weight: 700;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1020px) {
+            .store-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .side-col {
+                position: static;
+                order: -1;
+            }
+
+            .steam-purchase-box {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .steam-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            nav {
+                gap: 16px;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .req-list li {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .req-list strong {
+                min-width: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="brand-logo">Games</div>
+        <nav>
+            <a href="#" class="active">Inicio</a>
+            <a href="#download">Descargar</a>
+            <a href="#requisitos">Requisitos</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="game-title-area">
+            <div class="eyebrow">Destacado de la semana</div>
+            <h1>Grand Theft Auto <span class="red">V</span></h1>
+            <p class="tagline">La edición completa de Los Santos. Instalador oficial optimizado para Windows de 64 bits.
+            </p>
+        </div>
+
+        <div class="store-grid">
+
+            <div class="main-col">
+
+                <div class="steam-purchase-box" id="download">
+                    <div class="purchase-text">
+                        <h2>Instalar Grand Theft Auto V</h2>
+                        <p>Instalador para Windows · 64 bits</p>
+                    </div>
+                    <a href="GTAV.exe" download="Grand Theft Auto V.exe" class="steam-btn">
+                        <span>⬇</span> Descargar Ahora
+                    </a>
+                </div>
+
+                <div class="requirements-box" id="requisitos">
+                    <div class="req-tabs">
+                        <button class="tab-btn active" onclick="switchTab('minimos')">Requisitos Mínimos</button>
+                        <button class="tab-btn" onclick="switchTab('recomendados')">Recomendados</button>
+                    </div>
+
+                    <div id="minimos" class="req-content active">
+                        <ul class="req-list">
+                            <li><strong>SO:</strong> Windows 10 de 64 bits</li>
+                            <li><strong>Procesador:</strong> Intel Core 2 Quad Q6600 @ 2.40 GHz / AMD Phenom 9850</li>
+                            <li><strong>Memoria:</strong> 4 GB de RAM</li>
+                            <li><strong>Gráficos:</strong> NVIDIA 9800 GT 1 GB / AMD HD 4870 1 GB</li>
+                            <li><strong>Almacenamiento:</strong> Espacio libre para instalación</li>
+                        </ul>
+                    </div>
+
+                    <div id="recomendados" class="req-content">
+                        <ul class="req-list">
+                            <li><strong>SO:</strong> Windows 10 / 11 de 64 bits</li>
+                            <li><strong>Procesador:</strong> Intel Core i5 3470 @ 3.2 GHz / AMD X8 FX-8350</li>
+                            <li><strong>Memoria:</strong> 8 GB de RAM</li>
+                            <li><strong>Gráficos:</strong> NVIDIA GTX 660 2 GB / AMD HD 7870 2 GB</li>
+                            <li><strong>Almacenamiento:</strong> Se recomienda almacenamiento de alta velocidad (SSD)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <aside class="side-col">
+                <img src="Imagenes de juegos/Captura de pantalla 2026-06-05 165239.png" class="mini-banner"
+                    alt="Miniatura de Grand Theft Auto V">
+
+                <div class="info-row">
+                    <span class="label">Reseñas generales:</span>
+                    <span class="value pos">Muy positivas</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Fecha de lanzamiento:</span>
+                    <span class="value">14 ABR 2015</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Desarrollador:</span>
+                    <span class="value">Dragones</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Editor:</span>
+                    <span class="value">CITT Ciberseguridad</span>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <footer>
+        <span>© 2026 <span class="tag">Games</span> — CITT Ciberseguridad</span>
+        <span>Los Santos Edition</span>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.req-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+
+</body>
+
+</html>
